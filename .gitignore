@@ -1,0 +1,10 @@
+node_modules
+Gruntfile.js
+package.json
+build
+dist
+tmp
+.DS_Store
+*.swp
+.project
+*.log
