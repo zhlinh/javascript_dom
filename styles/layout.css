@@ -14,12 +14,27 @@ body {
   max-width: 80em;
 }
 header {
-  background-image: url(../images/guitarist.gif);
+  /* background-image: url(../images/guitarist.gif); */
   background-repeat: no-repeat;
   background-position: bottom right;
   border-width: .1em;
   border-style: solid;
   border-bottom-width: 0;
+}
+#home header {
+  background-image: url(../images/guitarist.gif);
+}
+#about header {
+  background-image: url(../images/lineup.gif);
+}
+#photos header {
+  background-image: url(../images/basshead.gif);
+}
+#live header {
+  background-image: url(../images/bassist.gif);
+}
+#contact header {
+  background-image: url(../images/drummer.gif);
 }
 header nav {
   background-image: url(../images/navbar.gif);

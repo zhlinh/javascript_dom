@@ -2,13 +2,13 @@
 
 ## Getting started
 
-If you want to use grunt to watch file change for developing:
+>If you want to use grunt to watch changes of file patterns for developing:
 
 1. Ensure you have all the prerequisites installed
-	+ `npm install -g grunt-cli
+	+ `npm install -g grunt-cli`
 
 2. Load the dependencies into your project
-	+ `npm install
+	+ `npm install`
 
 3. Start the task runner
 	+ `grunt server` for connect:server and watch
