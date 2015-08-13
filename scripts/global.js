@@ -1,5 +1,6 @@
 addLoadEvent(highlightPage);
 addLoadEvent(prepareSlideshow);
+addLoadEvent(prepareInternalnav);
 
 function addLoadEvent(func) {
   var oldonload = window.onload;
@@ -149,6 +150,49 @@ function prepareSlideshow() {
       if(destination.indexOf("contact.html") != -1) {
         moveElement("preview",-600,0,5);
       }
+    }
+  }
+}
+
+function showSection(id) {
+  var sections = document.getElementsByTagName("section");
+  for (var i = 0; i < sections.length; i++) {
+    if (sections[i].getAttribute("id") != id) {
+      sections[i].style.display = "none";
+    } else {
+      sections[i].style.display = "block";
+    }
+  }
+}
+
+function prepareInternalnav() {
+  if (!document.getElementsByTagName) {
+    return false;
+  }
+  if (!document.getElementById) {
+    return false;
+  }
+  var articles = document.getElementsByTagName("article");
+  if (articles.length == 0) {
+    return false;
+  }
+  var navs = articles[0].getElementsByTagName("nav");
+  if (navs.length == 0) {
+    return false;
+  }
+  var nav = navs[0];
+  var links = nav.getElementsByTagName("a");
+  for (var i = 0; i < links.length; i++) {
+    var sectionId = links[i].getAttribute("href").split("#")[1];
+    if (!document.getElementById(sectionId)) {
+      continue;
+    }
+    document.getElementById(sectionId).style.display = "none";
+    // onclick 的函数需要一个永久参数
+    links[i].destination = sectionId;
+    links[i].onclick = function() {
+      showSection(this.destination);
+      return false;
     }
   }
 }
