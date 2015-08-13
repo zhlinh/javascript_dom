@@ -1,4 +1,5 @@
 # javascript_dom
+--------------------
 
 ## Getting started
 
