@@ -17,7 +17,7 @@ function addLoadEvent(func) {
     window.onload = function() {
       oldonload();
       func();
-    }
+    };
   }
 }
 
@@ -157,7 +157,7 @@ function prepareSlideshow() {
       if(destination.indexOf("contact.html") != -1) {
         moveElement("preview",-600,0,5);
       }
-    }
+    };
   }
 }
 
@@ -200,7 +200,7 @@ function prepareInternalnav() {
     links[i].onclick = function() {
       showSection(this.destination);
       return false;
-    }
+    };
   }
 }
 
@@ -267,7 +267,7 @@ function prepareGallery() {
   for (var i = 0; i < links.length; i++) {
     links[i].onclick = function() {
       return showPic(this);
-    }
+    };
   }
 }
 
@@ -299,16 +299,15 @@ function highlightRows() {
     rows[i].oldClassName = rows[i].className;
     rows[i].onmouseover = function() {
       addClass(this,"highlight");
-    }
+    };
     rows[i].onmouseout = function() {
       this.className = this.oldClassName;
-    }
+    };
   }
 }
 
 function displayAbbreviations() {
-  if (!document.getElementsByTagName || !document.createElement
-     || !document.createTextNode) {
+  if (!document.getElementsByTagName || !document.createElement || !document.createTextNode) {
     return false;
   }
   var abbreviations = document.getElementsByTagName("abbr");
@@ -368,7 +367,7 @@ function focusLabels() {
       }
       var element = document.getElementById(id);
       element.focus();
-    }
+    };
   }
 }
 
@@ -391,13 +390,13 @@ function resetFields(whichform) {
         this.className = "";
         this.value = "";
       }
-    }
+    };
     element.onblur = function() {
       if (this.value == ""){
         this.className = "placeholder";
         this.value = this.placeholder || this.getAttribute("placeholder");
       }
-    }
+    };
     element.onblur();
   }
 }
@@ -407,8 +406,15 @@ function prepareForms() {
     var thisform = document.forms[i];
     resetFields(thisform);
     thisform.onsubmit = function() {
-      return validateForm(this);
-    }
+      if (!validateForm(this)) {
+        return false;
+      }
+      var article = document.getElementsByTagName("article")[0];
+      if (submitFormWithAjax(this, article)) {
+        return false;
+      }
+      return true;
+    };
   }
 }
 
@@ -440,5 +446,69 @@ function validateForm(whichform) {
       }
     }
   }
+  return true;
+}
+
+function getHttpObject() {
+  if (typeof XMLHttpRequest == "undefined") {
+    XMLHttpRequest = function() {
+      try {
+        return new ActiveXObject("Msxml2.XMLHTTP.6.0");
+      } catch (e) {
+      }
+      try {
+        return new ActiveXObject("Msxml2.XMLHTTP.3.0");
+      } catch (e) {
+      }
+      try {
+        return new ActiveXObject("Msxml2.XMLHTTP");
+      } catch (e) {
+      }
+      return false;
+    };
+  }
+  return new XMLHttpRequest();
+}
+
+function displayAjaxLoading(element) {
+  while (element.hasChildNodes()) {
+    element.removeChild(element.lastChild);
+  }
+  var content = document.createElement("img");
+  content.setAttribute("src", "images/loading.gif");
+  content.setAttribute("alt", "Loading...");
+  element.appendChild(content);
+}
+
+function submitFormWithAjax(whichform, thetarget) {
+  var request = getHttpObject();
+  if (!request) {
+    return false;
+  }
+  displayAjaxLoading(thetarget);
+  var dataParts = [];
+  var element;
+  for (var i = 0; i < whichform.elements.length; i++) {
+    element = whichform.elements[i];
+    dataParts[i] = element.name + "=" + encodeURIComponent(element.value);
+  }
+  var data = dataParts.join("&");
+  request.open("POST", whichform.getAttribute("action"), true);
+  request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  request.onreadystatechange = function() {
+    if (request.readyState == 4) {
+      if (request.status == 200 || request.status == 0) {
+        var matches = request.responseText.match(/<article>([\s\S]+)<\/article>/);
+        if (matches.length > 0) {
+          thetarget.innerHTML = matches[1];
+        } else {
+          thetarget.innerHTML = "<p>Oops, there was an error. Sorry.</p>";
+        }
+      } else {
+        thetarget.innerHTML = "<p>" + request.statusText + "</p>";
+      }
+    }
+  };
+  request.send(data);
   return true;
 }

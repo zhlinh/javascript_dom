@@ -14,7 +14,7 @@ body {
   max-width: 80em;
 }
 header {
-  /* background-image: url(../images/guitarist.gif); */
+  background-image: url(../images/guitarist.gif);
   background-repeat: no-repeat;
   background-position: bottom right;
   border-width: .1em;
