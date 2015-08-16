@@ -36,8 +36,7 @@ module.exports = function(grunt){
           livereload: '<%=connect.options.livereload%>'  //listen 35729
         },
         files: [  //watch files below
-          '*.html',
-          '*/*.html',
+          './{,*/}*.html',
           './styles/{,*/}*.css',
           './scripts/{,*/}*.js',
           './images/{,*/}*.{png,jpg,gif}'
