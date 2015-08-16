@@ -1,13 +1,23 @@
+// Load events
 addLoadEvent(highlightPage);
-addLoadEvent(prepareSlideshow);
-addLoadEvent(prepareInternalnav);
-addLoadEvent(preparePlaceholder);
-addLoadEvent(prepareGallery);
-addLoadEvent(stripeTables);
-addLoadEvent(highlightRows);
-addLoadEvent(displayAbbreviations);
-addLoadEvent(focusLabels);
-addLoadEvent(prepareForms);
+addLoadEvent(loadEvents);
+
+function loadEvents() {
+  // home
+  prepareSlideshow();
+  // about
+  prepareInternalnav();
+  // photos
+  preparePlaceholder();
+  prepareGallery();
+  // live
+  stripeTables();
+  highlightRows();
+  displayAbbreviations();
+  // contact
+  focusLabels();
+  prepareForms();
+}
 
 function addLoadEvent(func) {
   var oldonload = window.onload;
